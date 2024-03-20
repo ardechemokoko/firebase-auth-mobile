@@ -1,10 +1,12 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native'
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useState } from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = () => {
-    const [email ,setEmail] = useState();
-    const [password ,setPassword] = useState();
+    const [email ,setEmail] = useState('');
+    const [password ,setPassword] = useState('');
+    const [isLogin,setIslogin] =useState(true);
 
     const handelSubmit = () => {
         if(email.length > 0 && password.length > 0){
@@ -17,15 +19,20 @@ const Login = () => {
   return (
     <View style={styles.container}>
       <View style={styles.form}>
-        <Text style={styles.title}>Connexion</Text>
+        <Text style={styles.title}>
+            {isLogin?'Connexion !' : "Inscription"}
+        </Text>
         <TextInput 
             placeholder='Identifiant ou e-mail *'
             style={styles.input}
+            value={email}
             onChangeText={text => setEmail(text)}
         />
         <TextInput 
             placeholder='Mot de passe *'
             style={styles.input}
+            value={password}
+            secureTextEntry
             onChangeText={text => setPassword(text)}
         />
         <TouchableOpacity
@@ -35,6 +42,12 @@ const Login = () => {
                 <Text style={styles.txtBtn}>Se connecter</Text>
             </View>
         </TouchableOpacity>
+
+        <Pressable 
+            onPress={()=>setIslogin(prevState => !prevState)}
+        >
+            <Text style={styles.textLogin}>{isLogin?'Connectez vous !' : "Vous n'avez pas de compte ? Inscrivez-vous"}</Text>
+        </Pressable>
       </View>
     </View>
   )
@@ -84,5 +97,10 @@ const styles = StyleSheet.create({
         color :'#FFF',
         textAlign :'center',
         fontSize:17
+      },
+      textLogin:{
+        color :'#229BA9',
+        marginTop:8,
+        fontSize:15
       }
 })
