@@ -1,16 +1,44 @@
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useState } from 'react'
+import { Alert, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { actionSignup,actionSignin } from '../redux/actions/ActionAUth';
+import { useDispatch } from 'react-redux';
 
-const Login = () => {
+const Login = ({navigation}) => {
     const [email ,setEmail] = useState('');
     const [password ,setPassword] = useState('');
     const [isLogin,setIslogin] =useState(true);
+    const [error,setError]=useState(null);
 
+    const dispatch =useDispatch();
+
+    useEffect(()=>{
+       if(error !=null){
+        alert('error');
+       }
+    },[error])
     const handelSubmit = () => {
         if(email.length > 0 && password.length > 0){
-            alert('ok')
+            if(isLogin){
+                try {
+                    setError(null);
+                    dispatch(actionSignin(email,password))
+                    navigation.navigate('Home')
+                } catch (error) {
+                    setError(error.Error);
+                }
+            }
+            else{
+                try {
+                    setError(null);
+                    dispatch(actionSignup(email,password))
+                    //navigation.navigate('Home')
+                } catch (error) {
+                    setError(error.Error);
+                }
+                
+            }
         }
         else{
             alert('Email et mot de passe sont obligatoires');

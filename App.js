@@ -3,12 +3,15 @@ import { StyleSheet, Text, View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Login from './components/Login';
 import Home from './components/Home';
+import store from './redux/Store';
+import { Provider } from 'react-redux';
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
       <Stack.Navigator 
        initialRouteName="Login"
        screenOptions={{
@@ -19,6 +22,7 @@ export default function App() {
           <Stack.Screen name="Home" component={Home} />
       </Stack.Navigator>
     </NavigationContainer>
+    </Provider>
   );
 }
 
